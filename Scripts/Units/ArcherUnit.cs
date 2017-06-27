@@ -18,8 +18,8 @@ public class ArcherUnit : Unit {
 			case State.move:
 				if (targetpos != Vector3.zero) {
 					Move (targetpos);
-				} else if (moveTarget != null) {
-					Move (moveTarget.transform.position);
+				} else if (target != null) {
+					Move (target.transform.position);
 				}
 				break;
 
@@ -69,7 +69,7 @@ public class ArcherUnit : Unit {
 			GameObject attacktarget = target;
 			yield return StartCoroutine (ShootProjectile (target.transform));
 
-			if (target != null && attacktarget != null) {
+			if (target != null) {
 				//DealDamage ( target.GetComponent<Unit>());
 				if (attacktarget.tag == "Tower" || attacktarget.tag == "Base") {
 					if (!attacktarget.GetComponent<Building> ().destroyed) {

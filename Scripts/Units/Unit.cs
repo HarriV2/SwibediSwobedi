@@ -15,7 +15,6 @@ public class Unit : MonoBehaviour {
 	public float attackRange, attackDamage, aggroRange, armorRating, movementSpeed;
 	public State state;
 
-	public GameObject moveTarget;
 	public GameObject target;
 	public bool move=true;
 
@@ -26,7 +25,6 @@ public class Unit : MonoBehaviour {
 
 	public int spawnedAtOnce;
 	public float spawningOffsetY;
-	public float radius;
 
 	// Use this for initialization
 	void Start () {
@@ -76,7 +74,6 @@ public class Unit : MonoBehaviour {
 			}
 		}
 	}
-
 	public void Move(Vector3 targetPos){
 		targetPos.y = transform.position.y;
 		transform.LookAt (targetPos);
@@ -101,9 +98,9 @@ public class Unit : MonoBehaviour {
 	public void moveCheck(){
 
 		if (state == State.move) {
-			target = null;
+
 			int value = GetTower ();
-			moveTarget = GameManager.Instance.buildingList [value].gameObject;
+			target = GameManager.Instance.buildingList [value].gameObject;
 		}
 	}
 
@@ -168,10 +165,7 @@ public class Unit : MonoBehaviour {
 		foreach (Collider col in colliders) {
 			if (col.tag == "Unit" && !col.transform.GetComponent<Unit> ().dead) {
 				if (col.transform.GetComponent<Unit> ().team != team) {
-
-					Vector3 enemypos = col.transform.position;
-					enemypos.y = transform.position.y;
-					if ((Vector3.Distance (col.transform.position, transform.position)-col.transform.GetComponent<Unit>().radius) < closestDistance) {
+					if (Vector3.Distance (col.transform.position, transform.position) < closestDistance) {
 						closestDistance = Vector3.Distance (col.transform.position, transform.position);
 						target = col.gameObject;
 					}
@@ -179,26 +173,18 @@ public class Unit : MonoBehaviour {
 					move = false;
 				} 
 
-			} else if ((col.tag == "Base" || col.tag == "Tower")) {
+			} else if ((col.tag == "Base" || col.tag == "Tower") && !col.transform.GetComponent<Building> ().destroyed) {
 				if (col.transform.GetComponent<Building> ().team != team) {
-					
-					int value = GetTower ();
 
-					if (col.gameObject == GameManager.Instance.buildingList [value].gameObject) {
+					if (Vector3.Distance (col.transform.position, transform.position) < closestDistance) {
+						closestDistance = Vector3.Distance (col.transform.position, transform.position);
+						target = col.gameObject;
 
-						Vector3 enemypos = col.transform.position;
-						enemypos.y = transform.position.y;
-						Debug.Log ("distance: " + Vector3.Distance (enemypos, transform.position) + "closest: " + closestDistance);
-						if ((Vector3.Distance (col.transform.position, transform.position)-col.transform.GetComponent<Building>().radius) < closestDistance) {
-							Debug.Log ("bleep");
-							closestDistance = Vector3.Distance (col.transform.position, transform.position);
-							target = col.gameObject;
-
-						}
-						state = State.targetEnemy;
-						move = false;
 					}
+					state = State.targetEnemy;
+					move = false;
 				}
+
 			}
 		}
 	}
@@ -207,22 +193,13 @@ public class Unit : MonoBehaviour {
 		if (!move) {
 			Collider[] cols = Physics.OverlapSphere (transform.position, attackRange);
 			foreach (Collider col in cols) {
-				if ((col.tag == "Base" || col.tag == "Tower")) {
-					int value = GetTower ();
-
-					if (col.gameObject == GameManager.Instance.buildingList [value].gameObject) {
-
-						Vector3 enemypos = col.transform.position;
-						enemypos.y = transform.position.y;
-						if (col.transform.GetComponent<Building> ().team != team && (Vector3.Distance (enemypos, transform.position)-col.transform.GetComponent<Building>().radius) < attackRange) {
-							state = State.attack;
-						}
+				if ((col.tag == "Base" || col.tag == "Tower") && !col.transform.GetComponent<Building> ().destroyed) {
+					if (col.transform.GetComponent<Building> ().team != team && Vector3.Distance (col.transform.position, transform.position) < attackRange) {
+						state = State.attack;
 					}
 				}
 				if ((col.tag == "Unit") && !col.transform.GetComponent<Unit> ().dead) {
-					Vector3 enemypos = col.transform.position;
-					enemypos.y = transform.position.y;
-					if (col.transform.GetComponent<Unit> ().team != team && (Vector3.Distance (enemypos, transform.position)-col.transform.GetComponent<Unit>().radius) < attackRange) {
+					if (col.transform.GetComponent<Unit> ().team != team) {
 						state = State.attack;
 					}
 				}
@@ -233,11 +210,11 @@ public class Unit : MonoBehaviour {
 	public void CheckPos(){
 
 		if (team == Team.White) {
-			if (transform.position.z > moveTarget.transform.position.z) {
+			if (transform.position.z > target.transform.position.z) {
 				targetpos = Vector3.zero;
 			}
 		} else {
-			if (transform.position.z < moveTarget.transform.position.z) {
+			if (transform.position.z < target.transform.position.z) {
 				targetpos = Vector3.zero;
 			}
 		}

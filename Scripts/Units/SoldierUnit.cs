@@ -20,8 +20,8 @@ public class SoldierUnit : Unit {
 			case State.move:
 				if (targetpos != Vector3.zero) {
 					Move (targetpos);
-				} else if (moveTarget != null) {
-					Move (moveTarget.transform.position);
+				} else if (target != null) {
+					Move (target.transform.position);
 				}
 				break;
 

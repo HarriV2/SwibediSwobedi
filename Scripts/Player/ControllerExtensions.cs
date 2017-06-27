@@ -99,7 +99,7 @@ public class ControllerExtensions : MonoBehaviour {
 				RaycastHit rayHit;
 				if (Physics.Raycast( ray, out rayHit)) {
 					if (rayHit.collider.tag == "Base" || rayHit.collider.tag == "Tower") {
-						if (rayHit.collider.transform.parent.name == "White" && player.team == Team.White || rayHit.collider.transform.parent.name == "Black" && player.team == Team.Black) {
+						if (rayHit.collider.GetComponent<Building>().team == player.team ) {
 							if (rayHit.collider.tag == "Base") {
 								transform.parent.position = new Vector3 (rayHit.collider.transform.position.x, 25.2f, rayHit.collider.transform.position.z);
 							}
