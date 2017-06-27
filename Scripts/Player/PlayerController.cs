@@ -49,14 +49,12 @@ public class PlayerController : MonoBehaviour {
 	}
 	*/
 
-	/*
 	public Unit InstantiateUnit(Vector3 pos, int unitIndex){
 		GameObject go = Instantiate (UnitPrefabs[unitIndex], pos , Quaternion.identity, null);
 		Unit u = go.GetComponent<Unit> ();
 		go.transform.position += u.spawningOffsetY * Vector3.up;
 		return u;
 	}
-	*/
 
 	public List<Unit> InstantiateUnits( Vector3 pos, int unitIndex ){
 		List<Unit> units = new List<Unit> ();
@@ -65,9 +63,7 @@ public class PlayerController : MonoBehaviour {
 		for (int i = 0; i < amount; i++) {
 			GameObject go = Instantiate (UnitPrefabs[unitIndex], pos + Vector3.right * i * 2 , Quaternion.identity, null);
 			Unit u = go.GetComponent<Unit> ();
-			u.player = this;
 			go.transform.position += u.spawningOffsetY * Vector3.up;
-			go.transform.parent = GameManager.Instance.unitContainer;
 			units.Add (u);
 		}
 		return units;

@@ -9,6 +9,7 @@ public class Building : MonoBehaviour {
 	public bool destroyed;
 	public GameObject target;
 	public float ticks=0;
+	public float radius;
 
 	public Team team;
 
