@@ -5,7 +5,6 @@ using UnityEngine;
 public class BotAI : MonoBehaviour {
 
 	public GameObject[] unitPrefabs;
-	public Team team;
 
 	float spawnTimer = 0;
 	public float spawnInterval;
@@ -34,7 +33,6 @@ public class BotAI : MonoBehaviour {
 
 		GameObject go = Instantiate (unitPrefabs [i], transform.GetChild (pos).position, Quaternion.identity, GameManager.Instance.unitContainer.GetChild(1));
 		Unit u = go.GetComponent<Unit> ();
-		u.team = team;
 		go.transform.position += Vector3.up * u.spawningOffsetY;
 
 	}
