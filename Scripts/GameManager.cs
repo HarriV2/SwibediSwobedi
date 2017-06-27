@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour {
 	float timer = 0;
 	public Transform buildings;
 	public Building[] buildingList;
-	public PlayerController player;
 
 	public static GameManager Instance;
 	// Use this for initialization
