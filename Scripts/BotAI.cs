@@ -5,11 +5,10 @@ using UnityEngine;
 public class BotAI : MonoBehaviour {
 
 	public GameObject[] unitPrefabs;
-	public Team team;
 
 	float spawnTimer = 0;
 	public float spawnInterval;
-	public bool team;
+	public Team team;
 
 	// Use this for initialization
 	void Start () {
