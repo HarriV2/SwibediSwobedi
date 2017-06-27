@@ -9,6 +9,7 @@ public class BotAI : MonoBehaviour {
 
 	float spawnTimer = 0;
 	public float spawnInterval;
+	public bool team;
 
 	// Use this for initialization
 	void Start () {
