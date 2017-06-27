@@ -32,7 +32,7 @@ public class TowerBuilding : Building {
 				GameObject attacktarget = target;
 				yield return StartCoroutine (ShootProjectile (target.transform));
 
-				if (target != null) {
+				if (target != null && attacktarget != null) {
 					if (!attacktarget.GetComponent<Unit> ().dead) {
 						if (attacktarget.tag == "Unit") {
 							DealDamage (attacktarget.GetComponent<Unit> ());
